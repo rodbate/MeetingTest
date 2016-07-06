@@ -13,7 +13,7 @@
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
-    <mvc:anntation-driven/>
+    <mvc:annotation-driven/>
 
     <context:component-scan base-package="com"/>
 
@@ -25,11 +25,16 @@
     </bean>
 
     <bean id="dataSource" destroy-method="close"
-          class="org.apache.commons.dbcp.BasicDataSource">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
+          class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}"/>
+        <property name="minPoolSize" value="5"/>
+        <property name="maxPoolSize" value="30"/>
+        <property name="initialPoolSize" value="10"/>
+        <property name="acquireIncrement" value="5"/>
+        <property name="maxIdleTime" value="60"/>
     </bean>
 
 
