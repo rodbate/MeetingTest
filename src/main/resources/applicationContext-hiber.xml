@@ -4,7 +4,6 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
@@ -14,9 +13,7 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx.xsd
-       http://www.springframework.org/schema/data/jpa
-       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
     <context:annotation-config/>
@@ -27,41 +24,11 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <jpa:repositories base-package="com.comtop.repository" />
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations" value="classpath:jdbc.properties"/>
     </bean>
 
-    <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-
-        <!-- 指定数据源 -->
-        <property name="dataSource" ref="dataSource"/>
-
-        <!-- 指定Jpa持久化实现厂商类,这里以Hibernate为例 -->
-        <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
-
-        <!-- 指定Entity实体类包路径 -->
-        <property name="packagesToScan" >
-            <list>
-                <value>com.comtop.entity</value>
-            </list>
-        </property>
-
-        <!-- 指定JPA属性；如Hibernate中指定是否显示SQL的是否显示、方言等 -->
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-            </props>
-        </property>
-    </bean>
-
-    <!-- 配置c3p0数据源 -->
     <bean id="dataSource" destroy-method="close" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="${jdbc.driverClassName}"/>
         <property name="jdbcUrl" value="${jdbc.url}"/>
@@ -75,8 +42,19 @@
     </bean>
 
 
-    <bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan">
+            <list>
+                <value>com.comtop.entity</value>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <tx:annotation-driven transaction-manager="txManager"/>
