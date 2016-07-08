@@ -1,0 +1,6 @@
+
+
+define([
+    './MeetingController',
+    './IndexController'
+], function () {});

@@ -1,0 +1,17 @@
+
+<div class="container" ng-controller = "MeetingController">
+
+    <table class="table table-hover">
+        <tr align="center">
+            <th>ID</th>
+            <th>NAME</th>
+            <th>STATUS</th>
+        </tr>
+        <tr ng-repeat = "meeting in meetings">
+            <td>{{meeting.id}}</td>
+            <td>{{meeting.name}}</td>
+            <td>{{meeting.status}}</td>
+        </tr>
+    </table>
+
+</div>
