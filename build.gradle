@@ -69,7 +69,7 @@ dependencies {
 task unzip(type: Copy) {
 
     def srcPath = "${buildDir}/libs/MeetingTest-1.0.war"
-    def dest = "E:\\MeetingTest-1.0"
+    def dest = "D:\\MeetingTest-1.0"
 
     from zipTree(srcPath) into dest
 

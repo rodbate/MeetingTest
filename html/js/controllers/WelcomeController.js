@@ -2,7 +2,7 @@
 
 define(['../meeting','jquery'],function(module,$){
 
-    module.controller('IndexController', function(){
+    module.controller('WelcomeController', function(){
 
     });
 });

@@ -3,20 +3,20 @@
 require.config({
 
     paths: {
-        'jquery': 'lib/jquery.min',
-        'angular': 'lib/angular.min',
-        'angularRoute': 'lib/angular-route.min',
-        'angularResource': 'lib/angular-resource.min',
+        'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min',
+        'angular': 'http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min',
+        'angularRoute': 'http://apps.bdimg.com/libs/angular.js/1.4.6/angular-route.min',
+        'angularResource': 'http://apps.bdimg.com/libs/angular.js/1.4.6/angular-resource.min',
         'domReady': 'lib/domReady',
         'bootstrap': 'lib/bootstrap.min'
     },
 
 
     shim: {
-        'jquery' : { exports: '$'},
+        //'jquery' : { exports: '$'},
         'angular': {
-            deps: ['jquery'],
             exports: 'angular'
+            //deps: ['jquery']
         },
         'bootstrap': ['jquery'],
         'angularRoute': ['angular'],
@@ -39,7 +39,7 @@ require.config({
 require
 (
     [
-        'angular','briair', './controllers/IndexController'
+        'angular','meeting', './controllers/IndexController'
     ],
     function(angular)
     {
