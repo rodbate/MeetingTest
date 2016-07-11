@@ -1,9 +1,8 @@
 
 
+define(['../meeting','jquery'],function(module,$){
 
-define(['./module'], function (controllers) {
-    'use strict';
-    controllers.controller('MeetingController', ['$scope', '$http', function ($scope, $http) {
+    module.controller('MeetingController', function ($scope, $http) {
 
         $scope.meetings = [];
 
@@ -21,5 +20,6 @@ define(['./module'], function (controllers) {
 
         $scope.getMeetingList();
 
-    }]);
+    });
+
 });

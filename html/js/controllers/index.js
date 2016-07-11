@@ -1,6 +1,0 @@
-
-
-define([
-    './MeetingController',
-    './IndexController'
-], function () {});

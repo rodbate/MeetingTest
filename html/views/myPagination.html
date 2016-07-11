@@ -1,0 +1,27 @@
+<div>
+    <nav class="pull-right">
+        <ul class="pagination pagination-sm">
+
+            <li ng-class="{true:'active'}[pageObject.currentPage==1]">
+                <a href="javascript:void(0)" ng-click="showFirstPage(1)">&laquo;</a>
+            </li>
+
+            <li ng-class="{true:'disabled'}[pageObject.currentPage==1]">
+                <a href="javascript:void(0);" ng-click="upPageClick(pageObject.currentPage-1)">&lsaquo;</a>
+            </li>
+
+            <li ng-repeat="page in pageObject.pages" ng-class="{true:'active',false:''}[pageObject.currentPage==page]">
+                <a href="javascript:void(0);" ng-click="showCurrentPage(page)"><span translate="{{page}}"></span></a>
+            </li>
+
+            <li ng-class="{true:'disabled'}[pageObject.currentPage==pageObject.totalPage]">
+                <a href="javascript:void(0);" ng-click="downPageClick(pageObject.currentPage+1)">&rsaquo;</a>
+            </li>
+
+            <li ng-class="{true:'active'}[pageObject.currentPage==pageObject.totalPage]">
+                <a href="javascript:void(0)" ng-click="showLastPage(pageObject.totalPage)">&raquo;</a>
+            </li>
+
+        </ul>
+    </nav>
+</div>
