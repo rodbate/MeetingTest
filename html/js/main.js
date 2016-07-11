@@ -8,12 +8,14 @@ require.config({
         'angular-route': 'lib/angular-route.min',
         'angular-resource': 'lib/angular-resource.min',
         'domReady': 'lib/domReady',
-        'bootstrapJs': 'lib/bootstrap.min'
+        'bootstrap': 'lib/bootstrap.min'
     },
 
 
     shim: {
+        'jquery' : { exports: '$'},
         'angular': {
+            deps: ['jquery'],
             exports: 'angular'
         },
         'angular-route': {
@@ -22,11 +24,18 @@ require.config({
         'angular-resource': {
             deps: ['angular']
         }
-    },
+    }
 
-    deps: [
-        './bootstrap'
-    ]
+});
+
+
+require(['jquery', 'angular', 'angular-route', 'angular-resource'], function($, angular){
+
+    $(document).ready(function(angular){
+
+        angular.bootstrap(document, ['app']);
+    });
+
 });
 
 

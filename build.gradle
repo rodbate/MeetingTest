@@ -65,3 +65,16 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
+
+task unzip(type: Copy) {
+
+    def srcPath = "${buildDir}/libs/MeetingTest-1.0.war"
+    def dest = "E:\\MeetingTest-1.0"
+
+    from zipTree(srcPath) into dest
+
+    println srcPath
+}
+
+compileJava.options.encoding = 'UTF-8'
+
