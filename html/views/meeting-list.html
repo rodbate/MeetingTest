@@ -2,16 +2,22 @@
 <div class="container" ng-controller="MeetingController">
 
     <table class="table table-hover">
-        <tr align="center">
-            <th>ID</th>
-            <th>NAME</th>
-            <th>STATUS</th>
+        <tr>
+            <th align="center">ID</th>
+            <th align="center">NAME</th>
+            <th align="center">START-TIME</th>
+            <th align="center">END-TIME</th>
         </tr>
         <tr ng-repeat = "meeting in meetings">
             <td>{{meeting.id}}</td>
             <td>{{meeting.name}}</td>
-            <td>{{meeting.status}}</td>
+            <td>{{meeting.startTime}}</td>
+            <td>{{meeting.endTime}}</td>
         </tr>
     </table>
+
+    <div style="padding-right:10%">
+        <div my-pagination page-object="meetingPageObject"></div>
+    </div>
 
 </div>

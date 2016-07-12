@@ -3,20 +3,20 @@
 require.config({
 
     paths: {
-        'jquery': 'http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min',
-        'angular': 'http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min',
-        'angularRoute': 'http://apps.bdimg.com/libs/angular.js/1.4.6/angular-route.min',
-        'angularResource': 'http://apps.bdimg.com/libs/angular.js/1.4.6/angular-resource.min',
+        'jquery': 'lib/jquery.min',
+        'angular': 'lib/angular.min',
+        'angularRoute': 'lib/angular-route.min',
+        'angularResource': 'lib/angular-resource.min',
         'domReady': 'lib/domReady',
         'bootstrap': 'lib/bootstrap.min'
     },
 
 
     shim: {
-        //'jquery' : { exports: '$'},
+        'jquery' : { exports: '$'},
         'angular': {
-            exports: 'angular'
-            //deps: ['jquery']
+            exports: 'angular',
+            deps: ['jquery']
         },
         'bootstrap': ['jquery'],
         'angularRoute': ['angular'],
@@ -25,15 +25,6 @@ require.config({
 
 });
 
-
-/*require(['jquery', 'angular', 'angular-route', 'angular-resource'], function($, angular){
-
-    $(document).ready(function(angular){
-
-        angular.bootstrap(document, ['app']);
-    });
-
-});*/
 
 
 require

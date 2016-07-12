@@ -41,9 +41,9 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/web/welcome">Home</a></li>
-                        <li><a href="/web/meeting">MeetingRoom</a></li>
-                        <li><a href="">Contact</a></li>
+                        <li ng-class="{true: 'active', false: 'inactive'}[activeMenu[0]]" ng-click="active(0)"><a href="/web/welcome">Home</a></li>
+                        <li ng-class="{true: 'active', false: 'inactive'}[activeMenu[1]]" ng-click="active(1)"><a href="/web/meeting">MeetingRoom</a></li>
+                        <li ng-class="{true: 'active', false: 'inactive'}[activeMenu[2]]" ng-click="active(2)"><a href="">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -56,7 +56,7 @@
         </div>
 
         <!-- load requireJs -->
-        <script data-main="js/main.js" src="http://apps.bdimg.com/libs/require.js/2.1.9/require.min.js"></script>
+        <script data-main="js/main.js" src="js/lib/require.js"></script>
 
     </body>
 </html>

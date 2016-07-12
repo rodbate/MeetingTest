@@ -19,7 +19,15 @@
        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <!--<mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper" ref="jacksonObjectMapper" />
+            </bean>
+        </mvc:message-converters>-->
+    </mvc:annotation-driven>
+
+    <!--<bean id="jacksonObjectMapper" class="com.comtop.common.MyJsonMapper"/>-->
 
     <!--<mvc:resources mapping="/static/**" location="/WEB-INF/static/" />-->
 
