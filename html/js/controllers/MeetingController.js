@@ -8,7 +8,7 @@ define(['../meeting','jquery','../directives/myPagination'],function(module,$){
               currentPageList: [], //当前页面显示的数据列表
               currentPage: 1, //当前页，初始化为1
               totalPage: 0, //总页数
-              pageSize: 1, //页面大小
+              pageSize: 3, //页面大小
               pages:[] //前台页面按钮显示内容
         };
 
@@ -25,14 +25,13 @@ define(['../meeting','jquery','../directives/myPagination'],function(module,$){
                 }
             };
 
-            $http.get('/api/meeting', $scope.meetingSearch).success(function(data, status, headers){
+            $http.get('/api/meeting', $scope.meetingSearch).then(function(response){
 
-                $scope.meetingPageObject.totalPage = data.totalPage;
-                $scope.meetingPageObject.currentPageList=data.content;
-                $scope.meetings = data.content;
-            }).error(function(err){
-
-                console.log(err);
+                $scope.meetingPageObject.totalPage = response.data.totalPage;
+                $scope.meetingPageObject.currentPageList=response.data.content;
+                $scope.meetings = response.data.content;
+            }, function(response){
+                console.log(response);
             });
         }
 

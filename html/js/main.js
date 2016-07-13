@@ -8,7 +8,9 @@ require.config({
         'angularRoute': 'lib/angular-route.min',
         'angularResource': 'lib/angular-resource.min',
         'domReady': 'lib/domReady',
-        'bootstrap': 'lib/bootstrap.min'
+        'bootstrap': 'lib/bootstrap.min',
+        'datetimePicker': 'lib/bootstrap-datetimepicker.min',
+        'datetimePickerCN': 'lib/bootstrap-datetimepicker.zh-CN'
     },
 
 
@@ -19,6 +21,8 @@ require.config({
             deps: ['jquery']
         },
         'bootstrap': ['jquery'],
+        'datetimePicker': ['bootstrap'],
+        'datetimePickerCN': ['datetimePicker'],
         'angularRoute': ['angular'],
         'angularResource': ['angular']
     }

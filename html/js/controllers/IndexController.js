@@ -2,7 +2,7 @@
 
 define(['../meeting','jquery'],function(module,$){
 
-    module.controller('IndexController', function(){
+    module.controller('IndexController', function($scope){
 
         $scope.activeMenu = [true, false, false];
 

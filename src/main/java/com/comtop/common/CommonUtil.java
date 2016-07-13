@@ -7,10 +7,9 @@ import org.springframework.data.domain.Page;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class CommonUtil {
 
@@ -65,8 +64,27 @@ public class CommonUtil {
         return sdf.format(date);
     }
 
-    public static void main(String[] args) {
+    public static Map<String, Long> getStartEndUnixTimeByDay(long unixTime){
+        Map<String, Long> map = new HashMap<String, Long>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String d = unixTimeToString(unixTime, "yyyy-MM-dd");
+        String start = d + " 00:00";
+        String end = d + " 23:59";
+        try {
+            long startUnix = sdf.parse(start).getTime() / 1000;
+            long endUnix = sdf.parse(end).getTime() / 1000;
+            map.put("start", startUnix);
+            map.put("end", endUnix);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    public static void main(String[] args) throws ParseException {
         //System.out.println(new Date().getTime()/1000);
-        System.out.println(unixTimeToString(1468292400, "yyyy-MM-dd HH:mm"));
+        Map<String, Long> map = getStartEndUnixTimeByDay(1468224055);
+        //System.out.println(map.get("start") + "  " + map.get("end"));
+        //System.out.println(unixTimeToString(1468224055, "HH"));
     }
 }
