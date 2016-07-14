@@ -11,9 +11,4 @@ create table if not exists t_meeting (
     foreign key(hostId) references t_employee(id)
 );
 
-insert into t_meeting values (null, "测试会议1", 1468292400, 1468310400, 1, 1);
-insert into t_meeting values (null, "测试会议2", 1468292400, 1468310400, 2, 2);
-insert into t_meeting values (null, "测试会议3", 1468292400, 1468310400, 3, 3);
-insert into t_meeting values (null, "测试会议4", 1468396855, 1468397055, 4, 4);
-insert into t_meeting values (null, "测试会议5", 1468396855, 1468399055, 5, 5);
-insert into t_meeting values (null, "测试会议6", 1468396855, 1468398055, 3, 6);
+INSERT INTO `t_meeting` VALUES (1,'测试会议1',1468396800,1468400400,1,1),(2,'测试会议2',1468396800,1468400400,2,2),(3,'测试会议3',1468396800,1468400400,3,3),(4,'测试会议4',1468288800,1468292400,4,4),(5,'测试会议5',1468288800,1468292400,5,5),(6,'测试会议6',1468292400,1468296000,3,6);
