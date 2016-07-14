@@ -10,6 +10,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Test {
 
@@ -26,17 +28,17 @@ public class Test {
                 "  end : " + end.getTime() / 1000);*/
 
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        Set<Integer> hours = new TreeSet<Integer>();
 
-        MeetingRepository repository = context.getBean(MeetingRepository.class);
+        hours.add(21);
+        hours.add(1);
+        hours.add(12);
+        hours.add(5);
+        hours.add(3);
+        hours.add(3);
 
-        Pageable pageAble = new PageRequest(1, 2);
-
-        Page<Meeting> pager = repository.findAll(pageAble);
-        System.out.println("总页数：" + pager.getTotalPages());
-        List<Meeting> list =  pager.getContent();
-        for(Meeting user : list){
-            System.out.println(user.toString());
+        for (Integer i : hours) {
+            System.out.println(i);
         }
     }
 }

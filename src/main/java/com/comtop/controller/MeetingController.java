@@ -1,26 +1,22 @@
 package com.comtop.controller;
 
-import com.comtop.common.CommonUtil;
 import com.comtop.dao.MeetingRepository;
 import com.comtop.dao.MeetingRoomRepository;
 import com.comtop.entity.Meeting;
 import com.comtop.entity.MeetingRoom;
 import com.comtop.vo.*;
-import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 
 import java.util.*;
 
 import static org.springframework.data.domain.Sort.Direction.*;
+
+import static com.comtop.common.Constant.*;
+import static com.comtop.common.CommonUtil.*;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -41,7 +37,7 @@ public class MeetingController {
 
         PageRequest pageRequest;
 
-        if (CommonUtil.isNotNull(orderBy)) {
+        if (isNotNull(orderBy)) {
             pageRequest = new PageRequest(pageNo - 1, pageSize,
                     order == 0 ? ASC : DESC, orderBy);
         } else {
@@ -50,13 +46,13 @@ public class MeetingController {
 
         Page<Meeting> page = repository.findAll(pageRequest);
 
-        return CommonUtil.buildPageObject(page, Meeting.class, MeetingVO.class);
+        return buildPageObject(page, Meeting.class, MeetingVO.class);
     }
 
     @RequestMapping(value = "/meetingInfo/{timestamp}", produces = "application/json; charset=UTF-8",method = RequestMethod.GET)
     public Object getMeetingRoomDetailInfo(@PathVariable("timestamp") long timestamp){
 
-        Map<String, Long> map = CommonUtil.getStartEndUnixTimeByDay(timestamp / 1000);
+        Map<String, Long> map = getStartEndUnixTimeByDay(timestamp / 1000);
         long startUnixTime = map.get("start");
         long endUnixTime = map.get("end");
 
@@ -64,7 +60,7 @@ public class MeetingController {
 
         List<MeetingDetailVO> detailVOs = new ArrayList<MeetingDetailVO>();
 
-        Set<Integer> meetingRoomIds = new HashSet<Integer>();
+        Set<Integer> meetingRoomIds = new TreeSet<Integer>();
 
         for(Meeting meeting : meetings){
             MeetingDetailVO detailVO = new MeetingDetailVO();
@@ -85,11 +81,11 @@ public class MeetingController {
             HourActiveVO h17 = new HourActiveVO();
             HourActiveVO h18 = new HourActiveVO();
 
-            int startHour = Integer.valueOf(CommonUtil.unixTimeToString(meeting.getStartTime(), "HH"));
-            int endHour = Integer.valueOf(CommonUtil.unixTimeToString(meeting.getEndTime(), "HH"));
+            int startHour = Integer.valueOf(unixTimeToString(meeting.getStartTime(), "HH"));
+            int endHour = Integer.valueOf(unixTimeToString(meeting.getEndTime(), "HH"));
             int meetingId = meeting.getId();
             meetingRoomIds.add(meetingId);
-            for (int i = startHour; i <= endHour ; i++) {
+            for (int i = startHour; i < endHour ; i++) {
                 switch (i) {
                     case 9 : {
                        h9.setActive(1);
@@ -162,6 +158,65 @@ public class MeetingController {
         }
 
         return detailVOs;
+    }
+
+
+    @RequestMapping(value = "/meeting/{id}", produces = "application/json; charset=UTF-8",method = RequestMethod.GET)
+    public Object getMeetingById(@PathVariable("id") int id){
+
+        Meeting meeting = repository.getOne(id);
+        return convertObject(meeting, Meeting.class, MeetingDetailInfoVO.class);
+    }
+
+    @RequestMapping(value = "/meeting/validEndDate/{roomId}/{timestamp}", produces = "application/json; charset=UTF-8",method = RequestMethod.GET)
+    public Object getValidEndDate(@PathVariable("roomId") int roomId,
+                                  @PathVariable("timestamp") long timestamp){
+
+        Map<String, Long> map = getStartEndUnixTimeByDay(timestamp / 1000);
+        long startUnixTime = map.get("start");
+        long endUnixTime = map.get("end");
+
+        List<Meeting> meetings = repository.findValidEndDates(roomId, startUnixTime, endUnixTime);
+
+        Set<Integer> hours = new TreeSet<Integer>();
+        Set<Integer> retHours = new TreeSet<Integer>();
+
+
+        for(Meeting meeting : meetings){
+            int startHour = Integer.valueOf(unixTimeToString(meeting.getStartTime(), "HH"));
+            int endHour = Integer.valueOf(unixTimeToString(meeting.getEndTime(), "HH"));
+
+            for (int i = startHour; i < endHour; i++) {
+                hours.add(i);
+            }
+        }
+        hours.add(12);
+        hours.add(18);
+
+        for (Integer i : hours) {
+            System.out.println(i);
+        }
+        int currentHour = Integer.valueOf(unixTimeToString(timestamp / 1000, "HH"));
+
+        for(Integer h : hours) {
+            if (currentHour < h) {
+                for (int i = currentHour + 1; i <= h ; i++) {
+                    retHours.add(i);
+                }
+                break;
+            }
+        }
+
+        List<ValidEndDateVO> dates = new ArrayList<ValidEndDateVO>();
+        String date = unixTimeToString(timestamp / 1000, "yyyy-MM-dd");
+        for (Integer i : retHours){
+            ValidEndDateVO vo = new ValidEndDateVO();
+            vo.setHour(i + ":00");
+            vo.setTime(date + " " + i + ":00");
+            dates.add(vo);
+        }
+
+        return dates;
     }
 
 

@@ -50,6 +50,27 @@ public class CommonUtil {
         return object;
     }
 
+
+    public static Object convertObject(Object obj, Class src, Class target){
+
+        Object o = null;
+
+        try {
+            Constructor constructor = target.getConstructor(src);
+            o = constructor.newInstance(obj);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        return o;
+    }
+
     public static Object buildPageObject(Page page){
         return buildPageObject(page, null, null);
     }
@@ -81,10 +102,17 @@ public class CommonUtil {
         return map;
     }
 
+    public static Object getValidEndDates(){
+
+        return null;
+    }
     public static void main(String[] args) throws ParseException {
         //System.out.println(new Date().getTime()/1000);
         Map<String, Long> map = getStartEndUnixTimeByDay(1468224055);
         //System.out.println(map.get("start") + "  " + map.get("end"));
-        //System.out.println(unixTimeToString(1468224055, "HH"));
+        System.out.println(unixTimeToString(1468292400, "yyyy-MM-dd HH:mm"));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //System.out.println(sdf.parse("2018-3-8 17:00").getTime());
+
     }
 }

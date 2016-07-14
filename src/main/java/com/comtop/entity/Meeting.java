@@ -22,11 +22,11 @@ public class Meeting {
     @Column(name = "ENDTIME")
     private long endTime;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "HOSTID")
     private Employee host;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "MEETINGROOMID")
     private MeetingRoom meetingRoom;
 
