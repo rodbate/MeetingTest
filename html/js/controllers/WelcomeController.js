@@ -43,7 +43,39 @@ define(['../meeting','jquery'],function(module,$){
 
         }
 
+        $scope.participants = [];
+
+        $scope.getParticipants = function(){
+            $http.get('/api/employee').then(function(response){
+
+                $scope.participants = response.data;
+                $scope.initSelectize();
+            },function(response){
+                //console.log(response.data);
+            });
+        }
+
+        $scope.initSelectize = function(){
+
+            $('#select-participant').selectize({
+                maxItems: null,
+                valueField: 'id',
+                labelField: 'name',
+                searchField: 'name',
+                options: $scope.participants,
+                create: false,
+                onChange: function(values){
+                    console.log(values);
+                    $scope.createMeetingData.participants = values;
+                }
+            });
+        }
+
+        //$scope.getParticipants();
+
         $scope.initDatetimePicker();
+
+
 
         $scope.meetingInfo = [];
 
@@ -54,7 +86,7 @@ define(['../meeting','jquery'],function(module,$){
                     $scope.meetingInfo = response.data;
 
                 },function(response){
-                    console.log(response.data);
+                    //console.log(response.data);
                 });
         }
 
@@ -69,7 +101,7 @@ define(['../meeting','jquery'],function(module,$){
 
             },function(response){
 
-                console.log(response.status);
+                //console.log(response.status);
 
             });
         };
@@ -79,8 +111,21 @@ define(['../meeting','jquery'],function(module,$){
             meetingRoomName: '',
             meetingName: '',
             startDate: '',
-            endDate: ''
+            endDate: '',
+            hostId:'',
+            participants: []
         };
+
+        $scope.createMeeting = function(){
+
+            $http.post('/api/meeting', $scope.createMeetingData).then(function(response){
+
+                $("#createMeetingModal").modal('hide');
+
+            },function(response){
+
+            });
+        }
 
         $scope.showDetailOrCreate = function(meetingId, roomId, roomName, time){
 
@@ -91,6 +136,9 @@ define(['../meeting','jquery'],function(module,$){
                 $scope.currentDateTime = $scope.currentDate + " " + time;
                 $scope.createMeetingData.startDate = $scope.currentDateTime;
                 $scope.getValidEndDates(roomId, new Date($scope.currentDateTime).valueOf());
+                $scope.getParticipants();
+
+                console.log($scope.participants)
                 $scope.showModal("#createMeetingModal");
             }else{
                 //显示会议详情
@@ -109,8 +157,28 @@ define(['../meeting','jquery'],function(module,$){
 
             },function(response){
 
-                console.log(response.status);
+                //console.log(response.status);
 
+            });
+        }
+
+        $scope.validHosts = [];
+
+        $scope.getValidHosts = function(){
+            console.log(new Date($scope.createMeetingData.startDate).valueOf());
+            $scope.hostParams = {
+                params: {
+                    startTime: new Date($scope.createMeetingData.startDate).valueOf(),
+                    endTime: new Date($scope.createMeetingData.endDate).valueOf()
+                }
+            };
+
+            $http.get('/api/host/valid', $scope.hostParams).then(function(response){
+
+                $scope.validHosts = response.data;
+
+            },function(response){
+                //console.log(response.data)
             });
         }
 
@@ -120,11 +188,14 @@ define(['../meeting','jquery'],function(module,$){
 
         $scope.cancel = function(id){
             $(id).modal('hide');
-            $scope.createMeetingData.meetingName='';
+            $scope.createMeetingData={};
+            $scope.participants = [];
         }
 
         $scope.showModal = function(id){
             $(id).modal('show');
         }
+
+        $scope.myDisplay = null;
     });
 });

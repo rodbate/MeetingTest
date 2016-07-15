@@ -2,7 +2,9 @@ package com.comtop.common;
 
 
 import com.comtop.entity.Meeting;
+import com.comtop.vo.MeetingRoomVO;
 import com.comtop.vo.PageObject;
+import com.comtop.vo.TableTDVO;
 import org.springframework.data.domain.Page;
 
 import java.lang.reflect.Constructor;
@@ -10,6 +12,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.comtop.common.Constant.*;
+import static com.comtop.common.ReflectionUtil.*;
 
 public class CommonUtil {
 
@@ -106,6 +111,108 @@ public class CommonUtil {
 
         return null;
     }
+
+    public static void setTableTDForMeetingRoom(MeetingRoomVO roomVO, Meeting meeting, int startHour, int endHour){
+
+        int meetingId = meeting.getId();
+        String host = meeting.getHost().getName();
+
+        if (endHour == 0) {
+
+            for (int i = 0; i < HOURS_ARRAY.length; i++) {
+                TableTDVO v;
+                if (HOURS_ARRAY[i] == startHour) {
+                    v = new TableTDVO(meetingId, 1, 1, "", host);
+                    setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                } else {
+                    //v = new TableTDVO(0, 0, 1, "", "");
+                }
+
+            }
+        } else {
+
+            if (endHour - startHour == 2) {
+
+                for (int i = 0; i < HOURS_ARRAY.length; i++) {
+                    TableTDVO v;
+                    if (HOURS_ARRAY[i] == startHour) {
+                        v = new TableTDVO(meetingId, 1, 2, "", host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else if (HOURS_ARRAY[i] == startHour + 1) {
+                        v = new TableTDVO(meetingId, 1, 1, DISPLAY_NONE, host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else {
+                        //v = new TableTDVO(0, 0, 1, "", "");
+                    }
+
+                }
+            }
+
+            if (endHour - startHour == 3) {
+
+                for (int i = 0; i < HOURS_ARRAY.length; i++) {
+                    TableTDVO v;
+                    if (HOURS_ARRAY[i] == startHour) {
+                        v = new TableTDVO(meetingId, 1, 3, "", host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else if (HOURS_ARRAY[i] == startHour + 1) {
+                        v = new TableTDVO(meetingId, 1, 1, DISPLAY_NONE, host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else if (HOURS_ARRAY[i] == startHour + 2) {
+                        v = new TableTDVO(meetingId, 1, 1, DISPLAY_NONE, host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else {
+                        //v = new TableTDVO(0, 0, 1, "", "");
+                    }
+
+                }
+            }
+
+            if (endHour - startHour == 4) {
+
+                for (int i = 0; i < HOURS_ARRAY.length; i++) {
+                    TableTDVO v;
+                    if (HOURS_ARRAY[i] == startHour) {
+                        v = new TableTDVO(meetingId, 1, 4, "", host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else if (HOURS_ARRAY[i] == startHour + 1) {
+                        v = new TableTDVO(meetingId, 1, 1, DISPLAY_NONE, host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else if (HOURS_ARRAY[i] == startHour + 2) {
+                        v = new TableTDVO(meetingId, 1, 1, DISPLAY_NONE, host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else if (HOURS_ARRAY[i] == startHour + 3) {
+                        v = new TableTDVO(meetingId, 1, 1, DISPLAY_NONE, host);
+                        setField(MeetingRoomVO.class, "h" + HOURS_ARRAY[i], roomVO, v);
+                    } else {
+                       // v = new TableTDVO(0, 0, 1, "", "");
+                    }
+
+                }
+            }
+
+        }
+
+    }
+
+
+    public static void setTableTDForMeetingRoom(MeetingRoomVO roomVO, Meeting meeting, int startHour) {
+        setTableTDForMeetingRoom(roomVO, meeting, startHour, 0);
+    }
+
+    public static long stringToUnixTimeStamp(String time, String format){
+
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+        try {
+            return sdf.parse(time).getTime() / 1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
     public static void main(String[] args) throws ParseException {
         //System.out.println(new Date().getTime()/1000);
         Map<String, Long> map = getStartEndUnixTimeByDay(1468224055);

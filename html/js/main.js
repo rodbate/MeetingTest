@@ -10,7 +10,8 @@ require.config({
         'domReady': 'lib/domReady',
         'bootstrap': 'lib/bootstrap.min',
         'datetimePicker': 'lib/bootstrap-datetimepicker.min',
-        'datetimePickerCN': 'lib/bootstrap-datetimepicker.zh-CN'
+        'datetimePickerCN': 'lib/bootstrap-datetimepicker.zh-CN',
+        'selectize': 'lib/selectize'
     },
 
 
@@ -24,7 +25,8 @@ require.config({
         'datetimePicker': ['bootstrap'],
         'datetimePickerCN': ['datetimePicker'],
         'angularRoute': ['angular'],
-        'angularResource': ['angular']
+        'angularResource': ['angular'],
+        'selectize': ['jquery']
     }
 
 });

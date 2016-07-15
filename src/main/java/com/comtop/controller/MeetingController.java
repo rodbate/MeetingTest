@@ -1,9 +1,13 @@
 package com.comtop.controller;
 
+import com.comtop.dao.EmployeeRepository;
 import com.comtop.dao.MeetingRepository;
 import com.comtop.dao.MeetingRoomRepository;
+import com.comtop.dao.ParticipantRepository;
+import com.comtop.entity.Employee;
 import com.comtop.entity.Meeting;
 import com.comtop.entity.MeetingRoom;
+import com.comtop.entity.Participant;
 import com.comtop.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +32,12 @@ public class MeetingController {
 
     @Autowired
     MeetingRoomRepository roomRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
+
+    @Autowired
+    ParticipantRepository participantRepository;
 
     @RequestMapping(value = "/meeting", produces = "application/json; charset=UTF-8",method = RequestMethod.GET)
     public Object list(@RequestParam(name = "pageSize") int pageSize,
@@ -58,106 +68,46 @@ public class MeetingController {
 
         List<Meeting> meetings = repository.findByStartTimeBetween(startUnixTime, endUnixTime);
 
-        List<MeetingDetailVO> detailVOs = new ArrayList<MeetingDetailVO>();
-
-        Set<Integer> meetingRoomIds = new TreeSet<Integer>();
-
-        for(Meeting meeting : meetings){
-            MeetingDetailVO detailVO = new MeetingDetailVO();
-            MeetingRoomVO roomVO = new MeetingRoomVO();
-            MeetingInfoVO infoVO = new MeetingInfoVO();
-
-            MeetingRoom meetingRoom = meeting.getMeetingRoom();
-            roomVO.setId(meetingRoom.getId());
-            roomVO.setName(meetingRoom.getName());
-
-            HourActiveVO h9 = new HourActiveVO();
-            HourActiveVO h10 = new HourActiveVO();
-            HourActiveVO h11 = new HourActiveVO();
-            HourActiveVO h12 = new HourActiveVO();
-            HourActiveVO h14 = new HourActiveVO();
-            HourActiveVO h15 = new HourActiveVO();
-            HourActiveVO h16 = new HourActiveVO();
-            HourActiveVO h17 = new HourActiveVO();
-            HourActiveVO h18 = new HourActiveVO();
-
-            int startHour = Integer.valueOf(unixTimeToString(meeting.getStartTime(), "HH"));
-            int endHour = Integer.valueOf(unixTimeToString(meeting.getEndTime(), "HH"));
-            int meetingId = meeting.getId();
-            meetingRoomIds.add(meetingId);
-            for (int i = startHour; i < endHour ; i++) {
-                switch (i) {
-                    case 9 : {
-                       h9.setActive(1);
-                       h9.setMeetingId(meetingId);
-                    } break;
-                    case 10 : {
-                        h10.setActive(1);
-                        h10.setMeetingId(meetingId);
-                    };break;
-                    case 11 : {
-                        h11.setActive(1);
-                        h11.setMeetingId(meetingId);
-                    };break;
-                    case 12 : {
-                        h12.setActive(1);
-                        h12.setMeetingId(meetingId);
-                    };break;
-                    case 14 : {
-                        h14.setActive(1);
-                        h14.setMeetingId(meetingId);
-                    };break;
-                    case 15 : {
-                        h15.setActive(1);
-                        h15.setMeetingId(meetingId);
-                    };break;
-                    case 16 : {
-                        h16.setActive(1);
-                        h16.setMeetingId(meetingId);
-                    };break;
-                    case 17 : {
-                        h17.setActive(1);
-                        h17.setMeetingId(meetingId);
-                    };break;
-                    case 18 : {
-                        h18.setActive(1);
-                        h18.setMeetingId(meetingId);
-                    };break;
-                }
-            }
-
-            infoVO.setH9(h9);
-            infoVO.setH10(h10);
-            infoVO.setH11(h10);
-            infoVO.setH12(h12);
-            infoVO.setH14(h14);
-            infoVO.setH15(h15);
-            infoVO.setH16(h16);
-            infoVO.setH17(h17);
-            infoVO.setH18(h18);
-
-            detailVO.setRoom(roomVO);
-            detailVO.setInfo(infoVO);
-            detailVOs.add(detailVO);
-        }
-
+        List<MeetingRoomVO> roomVOs = new ArrayList<MeetingRoomVO>();
 
         List<MeetingRoom> rooms = roomRepository.findAll();
 
+        Map<Integer, MeetingRoomVO> roomVOMap = new HashMap<Integer, MeetingRoomVO>();
+
         for(MeetingRoom room : rooms){
-            int id = room.getId();
-            String name = room.getName();
-            if (!meetingRoomIds.contains(id)){
-                MeetingDetailVO detailVO = new MeetingDetailVO();
-                MeetingRoomVO roomVO = new MeetingRoomVO();
-                roomVO.setId(id);
-                roomVO.setName(name);
-                detailVO.setRoom(roomVO);
-                detailVOs.add(detailVO);
-            }
+            MeetingRoomVO roomVO = new MeetingRoomVO();
+            roomVO.setId(room.getId());
+            roomVO.setName(room.getName());
+            roomVOMap.put(room.getId(), roomVO);
         }
 
-        return detailVOs;
+
+        for(Meeting meeting : meetings){
+
+
+            MeetingRoom meetingRoom = meeting.getMeetingRoom();
+
+            int roomId = meetingRoom.getId();
+
+            int startHour = Integer.valueOf(unixTimeToString(meeting.getStartTime(), "HH"));
+            int endHour = Integer.valueOf(unixTimeToString(meeting.getEndTime(), "HH"));
+
+            MeetingRoomVO roomVO = roomVOMap.get(roomId);
+
+            if (endHour - startHour == 1) {
+                setTableTDForMeetingRoom(roomVO, meeting, startHour);
+            } else {
+                setTableTDForMeetingRoom(roomVO, meeting, startHour, endHour);
+            }
+
+        }
+
+        for ( Map.Entry<Integer, MeetingRoomVO> entry : roomVOMap.entrySet()) {
+
+            roomVOs.add(entry.getValue());
+        }
+
+        return roomVOs;
     }
 
 
@@ -217,6 +167,54 @@ public class MeetingController {
         }
 
         return dates;
+    }
+
+
+    @RequestMapping(value = "/host/valid", produces = "application/json; charset=UTF-8",method = RequestMethod.GET)
+    public Object getValidHosts(@RequestParam(name = "startTime") long startTime,
+                                @RequestParam(name = "endTime") long endTime){
+
+        return employeeRepository.findValidEmployee(startTime / 1000, endTime / 1000);
+    }
+
+    @RequestMapping(value = "/employee", produces = "application/json; charset=UTF-8",method = RequestMethod.GET)
+    public Object getEmployees(){
+
+        return employeeRepository.findAll();
+
+    }
+
+    @RequestMapping(value = "/meeting", produces = "application/json; charset=UTF-8",method = RequestMethod.POST)
+    public Object createMeeting(@RequestBody MeetingRequest meetingRequest){
+
+        Meeting meeting = new Meeting();
+
+        meeting.setName(meetingRequest.getMeetingName());
+        meeting.setHost(employeeRepository.findOne(meetingRequest.getHostId()));
+        meeting.setStartTime(stringToUnixTimeStamp(meetingRequest.getStartDate(), TIME_FORMAT));
+        meeting.setEndTime(stringToUnixTimeStamp(meetingRequest.getEndDate(), TIME_FORMAT));
+        meeting.setMeetingRoom(roomRepository.findOne(meetingRequest.getMeetingRoomId()));
+
+        Meeting retMeeting = repository.save(meeting);
+
+        int[] participantIds = meetingRequest.getParticipants();
+
+        List<Participant> participants = new ArrayList<Participant>();
+
+        for (int i = 0; i < participantIds.length; i++) {
+
+            Employee employee = employeeRepository.findOne(participantIds[i]);
+
+            Participant p = new Participant();
+            p.setName(employee.getName());
+            p.setMeeting(retMeeting);
+            participants.add(p);
+        }
+
+        participantRepository.save(participants);
+
+        return "success";
+
     }
 
 

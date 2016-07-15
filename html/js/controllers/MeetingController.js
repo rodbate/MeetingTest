@@ -31,7 +31,7 @@ define(['../meeting','jquery','../directives/myPagination'],function(module,$){
                 $scope.meetingPageObject.currentPageList=response.data.content;
                 $scope.meetings = response.data.content;
             }, function(response){
-                console.log(response);
+                //console.log(response.data);
             });
         }
 

@@ -1,6 +1,6 @@
 
 
-define(['angular','routes','./services/dependencyResolverFor','angularResource','angularRoute','bootstrap','datetimePicker','datetimePickerCN'], function(angular,config, dependencyResolverFor)
+define(['angular','routes','./services/dependencyResolverFor','angularResource','angularRoute','bootstrap','datetimePicker','datetimePickerCN','selectize'], function(angular,config, dependencyResolverFor)
 {
     var app = angular.module('meeting', ['ngResource', 'ngRoute']);
     app.config(
