@@ -116,11 +116,21 @@ define(['../meeting','jquery'],function(module,$){
             participants: []
         };
 
-        $scope.createMeeting = function(){
+        $scope.createMeeting = function(flag){
+
+            $scope.meetingNameNullHide = true;
+
+            if(!flag) return;
 
             $http.post('/api/meeting', $scope.createMeetingData).then(function(response){
 
                 $("#createMeetingModal").modal('hide');
+
+                console.log(response.data);
+                $scope.getMeetingInfo($scope.timestamp);
+
+                $scope.createMeetingData = {};
+                $scope.participants = [];
 
             },function(response){
 
@@ -139,6 +149,7 @@ define(['../meeting','jquery'],function(module,$){
                 $scope.getParticipants();
 
                 console.log($scope.participants)
+                $scope.meetingNameNullHide = false;
                 $scope.showModal("#createMeetingModal");
             }else{
                 //显示会议详情

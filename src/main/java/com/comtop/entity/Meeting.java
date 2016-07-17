@@ -1,7 +1,9 @@
 package com.comtop.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -22,16 +24,20 @@ public class Meeting {
     @Column(name = "ENDTIME")
     private long endTime;
 
-    @ManyToOne
-    @JoinColumn(name = "HOSTID")
+    @Column(name = "HOSTID")
+    private int hostId;
+
+    @Column(name = "MEETINGROOMID")
+    private int meetingRoomId;
+
+    @Transient
+    private Set<Participant> participants = new HashSet<Participant>();
+
+    @Transient
     private Employee host;
 
-    @ManyToOne
-    @JoinColumn(name = "MEETINGROOMID")
+    @Transient
     private MeetingRoom meetingRoom;
-
-    @OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY)
-    private Set<Participant> participants = new HashSet<Participant>();
 
 
     public Integer getId() {
@@ -66,10 +72,33 @@ public class Meeting {
         this.endTime = endTime;
     }
 
+    public int getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(int hostId) {
+        this.hostId = hostId;
+    }
+
+    public int getMeetingRoomId() {
+        return meetingRoomId;
+    }
+
+    public void setMeetingRoomId(int meetingRoomId) {
+        this.meetingRoomId = meetingRoomId;
+    }
+
+    public Set<Participant> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<Participant> participants) {
+        this.participants = participants;
+    }
+
     public Employee getHost() {
         return host;
     }
-
 
     public void setHost(Employee host) {
         this.host = host;
@@ -79,17 +108,7 @@ public class Meeting {
         return meetingRoom;
     }
 
-
     public void setMeetingRoom(MeetingRoom meetingRoom) {
         this.meetingRoom = meetingRoom;
-    }
-
-    public Set<Participant> getParticipants() {
-        return participants;
-    }
-
-
-    public void setParticipants(Set<Participant> participants) {
-        this.participants = participants;
     }
 }

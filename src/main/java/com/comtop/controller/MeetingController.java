@@ -9,6 +9,7 @@ import com.comtop.entity.Meeting;
 import com.comtop.entity.MeetingRoom;
 import com.comtop.entity.Participant;
 import com.comtop.vo.*;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -85,9 +86,17 @@ public class MeetingController {
         for(Meeting meeting : meetings){
 
 
-            MeetingRoom meetingRoom = meeting.getMeetingRoom();
+            int roomId = meeting.getMeetingRoomId();
 
-            int roomId = meetingRoom.getId();
+            int hostId = meeting.getHostId();
+
+            MeetingRoom meetingRoom = roomRepository.findOne(roomId);
+
+            Employee host = employeeRepository.findOne(hostId);
+
+            meeting.setHost(host);
+
+            meeting.setMeetingRoom(meetingRoom);
 
             int startHour = Integer.valueOf(unixTimeToString(meeting.getStartTime(), "HH"));
             int endHour = Integer.valueOf(unixTimeToString(meeting.getEndTime(), "HH"));
@@ -114,7 +123,24 @@ public class MeetingController {
     @RequestMapping(value = "/meeting/{id}", produces = "application/json; charset=UTF-8",method = RequestMethod.GET)
     public Object getMeetingById(@PathVariable("id") int id){
 
-        Meeting meeting = repository.getOne(id);
+        Meeting meeting = repository.findOne(id);
+
+        int roomId = meeting.getMeetingRoomId();
+
+        int hostId = meeting.getHostId();
+
+        MeetingRoom meetingRoom = roomRepository.findOne(roomId);
+
+        Employee host = employeeRepository.findOne(hostId);
+
+        List<Participant> participants = participantRepository.findByMeetingId(meeting.getId());
+
+        meeting.setHost(host);
+
+        meeting.setMeetingRoom(meetingRoom);
+
+        meeting.setParticipants(listToSet(participants));
+
         return convertObject(meeting, Meeting.class, MeetingDetailInfoVO.class);
     }
 
@@ -190,10 +216,10 @@ public class MeetingController {
         Meeting meeting = new Meeting();
 
         meeting.setName(meetingRequest.getMeetingName());
-        meeting.setHost(employeeRepository.findOne(meetingRequest.getHostId()));
+        meeting.setHostId(meetingRequest.getHostId());
         meeting.setStartTime(stringToUnixTimeStamp(meetingRequest.getStartDate(), TIME_FORMAT));
         meeting.setEndTime(stringToUnixTimeStamp(meetingRequest.getEndDate(), TIME_FORMAT));
-        meeting.setMeetingRoom(roomRepository.findOne(meetingRequest.getMeetingRoomId()));
+        meeting.setMeetingRoomId(meetingRequest.getMeetingRoomId());
 
         Meeting retMeeting = repository.save(meeting);
 
@@ -207,13 +233,13 @@ public class MeetingController {
 
             Participant p = new Participant();
             p.setName(employee.getName());
-            p.setMeeting(retMeeting);
+            p.setMeetingId(retMeeting.getId());
             participants.add(p);
         }
 
         participantRepository.save(participants);
 
-        return "success";
+        return 1;
 
     }
 

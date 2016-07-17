@@ -14,9 +14,8 @@ public class Participant {
     @Column(name = "NAME")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "MEETINGID")
-    private Meeting meeting;
+    @Column(name = "MEETINGID")
+    private int meetingId;
 
 
     public Integer getId() {
@@ -35,11 +34,11 @@ public class Participant {
         this.name = name;
     }
 
-    public Meeting getMeeting() {
-        return meeting;
+    public int getMeetingId() {
+        return meetingId;
     }
 
-    public void setMeeting(Meeting meeting) {
-        this.meeting = meeting;
+    public void setMeetingId(int meetingId) {
+        this.meetingId = meetingId;
     }
 }

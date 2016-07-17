@@ -16,8 +16,6 @@ public class MeetingRoom {
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(mappedBy = "meetingRoom", fetch = FetchType.LAZY)
-    private Set<Meeting> meetings = new HashSet<Meeting>();
 
     public Integer getId() {
         return id;
@@ -35,11 +33,4 @@ public class MeetingRoom {
         this.name = name;
     }
 
-    public Set<Meeting> getMeetings() {
-        return meetings;
-    }
-
-    public void setMeetings(Set<Meeting> meetings) {
-        this.meetings = meetings;
-    }
 }

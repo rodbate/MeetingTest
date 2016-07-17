@@ -213,6 +213,16 @@ public class CommonUtil {
     }
 
 
+    public static Set listToSet(List src){
+        Set set = new HashSet();
+
+        for (Object o : src) {
+            set.add(o);
+        }
+
+        return set;
+    }
+
     public static void main(String[] args) throws ParseException {
         //System.out.println(new Date().getTime()/1000);
         Map<String, Long> map = getStartEndUnixTimeByDay(1468224055);
