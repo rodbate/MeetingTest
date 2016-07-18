@@ -135,20 +135,23 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">结束时间</label>
                             <div class="col-md-7">
-                                <select class="form-control" style="width:100%;"  ng-model="createMeetingData.endDate" ng-options="d.time as d.hour for d in validEndDates" ng-change="getValidHosts()" placeholder="选择结束时间..."></select>
+                                <select class="form-control" name="endTime" style="width:100%;"  ng-model="createMeetingData.endDate" ng-options="d.time as d.hour for d in validEndDates" ng-change="getValidHosts()" placeholder="选择结束时间..." required ></select>
+                                <span class="text-danger" ng-show="createMeetingForm.endTime.$error.required && endTimeNullHide">结束时间不能为空</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">主持人</label>
                             <div class="col-md-7">
-                                <select class="form-control" style="width:100%;"  ng-model="createMeetingData.hostId" ng-options="h.id as h.name for h in validHosts" placeholder="选择主持人..."></select>
+                                <select class="form-control" name="hostName" style="width:100%;"  ng-model="createMeetingData.hostId" ng-options="h.id as h.name for h in validHosts" placeholder="选择主持人..." required ></select>
+                                <span class="text-danger" ng-show="createMeetingForm.hostName.$error.required && hostNameNullHide">主持人不能为空</span>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="select-participant" class="col-md-3 control-label">与会者</label>
                             <div class="col-md-7">
-                                <select id="select-participant" placeholder="选择参与人..."></select>
+                                <select id="select-participant" name="participant" placeholder="选择参与人..." required ></select>
+                                <span class="text-danger" ng-show="createMeetingForm.participant.$error.required && participantNullHide">参与人不能为空</span>
                             </div>
                         </div>
 

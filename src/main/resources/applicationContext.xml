@@ -38,6 +38,7 @@
     <jpa:repositories base-package="com.comtop.dao" />
 
 
+
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations" value="classpath:jdbc.properties"/>
     </bean>

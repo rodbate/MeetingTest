@@ -1,23 +1,70 @@
 
 <div class="container" ng-controller="MeetingController">
 
-    <table class="table table-hover">
-        <tr>
-            <th align="center">ID</th>
-            <th align="center">NAME</th>
-            <th align="center">START-TIME</th>
-            <th align="center">END-TIME</th>
-        </tr>
-        <tr ng-repeat = "meeting in meetings">
-            <td>{{meeting.id}}</td>
-            <td>{{meeting.name}}</td>
-            <td>{{meeting.startTime}}</td>
-            <td>{{meeting.endTime}}</td>
-        </tr>
-    </table>
+    <form class="form-inline">
+        <div class="form-group">
+            <label>会议名称 </label>
+            <input type="text" ng-model="fuzzySearch.meetingName" class="form-control" placeholder="会议名称">
+        </div>
+        <div class="form-group" style="padding-left:5%;padding-right:3%">
+            <label>主持人 </label>
+            <input type="text" ng-model="fuzzySearch.hostName" class="form-control" placeholder="主持人">
+        </div>
+        <button type="button" class="btn btn-primary" ng-click="getMeetingList()">
+            <span class="glyphicon glyphicon-search">搜索</span>
+        </button>
+    </form>
 
-    <div style="padding-right:10%">
-        <div my-pagination page-object="meetingPageObject"></div>
+    <div style="padding-bottom:5%"></div>
+    <div>
+        <table class="table table-hover">
+            <tr>
+                <th style="cursor:pointer" ng-click="sortByTHead('id')">会议ID</th>
+                <th style="cursor:pointer" ng-click="sortByTHead('meetingName')">会议名称</th>
+                <th style="cursor:pointer" ng-click="sortByTHead('hostName')">主持人</th>
+                <th style="cursor:pointer" ng-click="sortByTHead('startTime')">开始时间</th>
+                <th style="cursor:pointer" ng-click="sortByTHead('endTime')">结束时间</th>
+                <th>操作</th>
+            </tr>
+            <tr ng-repeat = "meeting in meetings">
+                <td>{{meeting.id}}</td>
+                <td>{{meeting.meetingName}}</td>
+                <td>{{meeting.hostName}}</td>
+                <td>{{meeting.startTime}}</td>
+                <td>{{meeting.endTime}}</td>
+                <td>
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteMeetingModal" ng-click="saveSomeMeetingId(meeting.id)" >删除</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-md-1 col-md-offset-11" >
+            <select class="form-control" ng-model="meetingPageObject.pageSize" ng-options="p as p for p in selectablePageSize" ng-change="getMeetingList()" placeholder="select page size"></select>
+        </div>
+        <div class="">
+    </div>
+
+    <div my-pagination page-object="meetingPageObject"></div>
+
+    <!-- delete modal -->
+    <div class="modal fade" id="deleteMeetingModal" tabindex="-1" role="dialog" aria-labelledby="deleteMeetingModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="deleteMeetingModalLabel">确定删除吗？</h4>
+                </div>
+                <div class="modal-body text-center">
+                    确定删除吗？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-success" ng-click="deleteMeeting(meetingId)">确定</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

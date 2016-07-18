@@ -119,6 +119,9 @@ define(['../meeting','jquery'],function(module,$){
         $scope.createMeeting = function(flag){
 
             $scope.meetingNameNullHide = true;
+            $scope.endTimeNullHide = true;
+            $scope.hostNameNullHide = true;
+            $scope.participantNullHide = true;
 
             if(!flag) return;
 
@@ -150,6 +153,9 @@ define(['../meeting','jquery'],function(module,$){
 
                 console.log($scope.participants)
                 $scope.meetingNameNullHide = false;
+                $scope.endTimeNullHide = false;
+                $scope.hostNameNullHide = false;
+                $scope.participantNullHide = false;
                 $scope.showModal("#createMeetingModal");
             }else{
                 //显示会议详情

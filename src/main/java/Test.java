@@ -1,7 +1,9 @@
 import com.comtop.common.CommonUtil;
 import com.comtop.controller.MeetingController;
+import com.comtop.dao.MeetingDao;
 import com.comtop.dao.MeetingRepository;
 import com.comtop.entity.Meeting;
+import com.comtop.service.MeetingService;
 import com.google.gson.Gson;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -34,22 +36,13 @@ public class Test {
         ClassPathXmlApplicationContext context =
                 new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 
-        MeetingController bean = context.getBean(MeetingController.class);
 
-        //Object list = bean.list(5, 1, 0, null);
+        MeetingDao bean = context.getBean(MeetingDao.class);
+        Object o = bean.getMeetingsOnConditions("测试",null,3,1,0,"hostname");
+
+        System.out.println(new Gson().toJson(o));
 
 
-        //System.out.println(new Gson().toJson(list));
-
-        //Object room = bean.getMeetingRoomDetailInfo(CommonUtil.stringToUnixTimeStamp("2016-07-13 14:00",
-                //"yyyy-MM-dd HH:mm") * 1000);
-
-        //Object m = bean.getMeetingById(1);
-
-        Object date = bean.getValidEndDate(1, CommonUtil.stringToUnixTimeStamp("2016-07-13 14:00",
-                "yyyy-MM-dd HH:mm") * 1000);
-
-        System.out.println(new Gson().toJson(date));
 
     }
 }
