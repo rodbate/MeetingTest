@@ -59,7 +59,7 @@ public class MeetingDao {
 
         sql.append(" limit ")
                 .append((pageNo - 1) * pageSize).append(",")
-                .append(pageNo * pageSize);
+                .append(pageSize);
 
         List resultList = entityManager.createNativeQuery(sql.toString()).getResultList();
 
