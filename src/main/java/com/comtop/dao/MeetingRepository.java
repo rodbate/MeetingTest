@@ -18,4 +18,6 @@ public interface MeetingRepository extends JpaRepository<Meeting, Integer> {
     List<Meeting> findValidEndDates(int meetingRoomId, long startTime, long endTime);
 
     int deleteById(Integer id);
+
+    long countByName(String name);
 }

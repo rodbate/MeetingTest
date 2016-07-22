@@ -37,8 +37,8 @@ public class Test {
                 new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 
 
-        MeetingDao bean = context.getBean(MeetingDao.class);
-        Object o = bean.getMeetingsOnConditions("测试",null,3,1,0,"hostname");
+        MeetingService bean = context.getBean(MeetingService.class);
+        Object o = bean.existMeeting("测试会议3");
 
         System.out.println(new Gson().toJson(o));
 

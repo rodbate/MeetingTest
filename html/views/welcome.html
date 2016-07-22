@@ -116,8 +116,9 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">会议名称</label>
                             <div class="col-md-7">
-                                <input placeholder="会议名称" class="form-control" name="meetingName" type="text" ng-model="createMeetingData.meetingName" required />
+                                <input placeholder="会议名称" class="form-control" name="meetingName" ng-blur="checkMeetingName()" ng-focus="focusCall('meetingNameExisted')" type="text" ng-model="createMeetingData.meetingName" required />
                                 <span class="text-danger" ng-show="createMeetingForm.meetingName.$error.required && meetingNameNullHide">会议名称不能为空</span>
+                                <span class="text-danger" ng-show="meetingNameExisted">会议名称已存在</span>
                             </div>
                         </div>
                         <div class="form-group">

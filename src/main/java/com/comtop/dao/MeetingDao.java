@@ -35,7 +35,7 @@ public class MeetingDao {
     public Object getMeetingsOnConditions(String meetingName, String hostName, int pageSize,
                                           int pageNo, int order, String orderBy){
 
-        StringBuffer sql = new StringBuffer();
+        StringBuilder sql = new StringBuilder();
 
         sql.append("select a.id id,a.name meetingName,a.startTime startTime,a.endTime " +
                 "endTime ,b.name hostName from t_meeting a left join t_employee b " +

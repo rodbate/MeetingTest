@@ -83,5 +83,9 @@ public class MeetingController {
         return meetingService.deleteById(id);
     }
 
+    @RequestMapping(value = "/meeting/exist/{name}", produces = "application/json; charset=UTF-8", method = RequestMethod.GET)
+    public Object checkUniqueMeetingByName(@PathVariable("name") String name){
+        return meetingService.existMeeting(name);
+    }
 
 }

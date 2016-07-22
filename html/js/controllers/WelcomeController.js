@@ -124,6 +124,7 @@ define(['../meeting','jquery'],function(module,$){
             $scope.participantNullHide = true;
 
             if(!flag) return;
+            if($scope.meetingNameExisted) return;
 
             $http.post('/api/meeting', $scope.createMeetingData).then(function(response){
 
@@ -197,6 +198,31 @@ define(['../meeting','jquery'],function(module,$){
             },function(response){
                 //console.log(response.data)
             });
+        }
+
+
+        $scope.checkMeetingName = function(){
+
+            $http.get('/api/meeting/exist/' +　$scope.createMeetingData.meetingName).then(function(response){
+
+                var count = Number(response.data);
+
+                if (count > 0) {
+                    $scope.meetingNameExisted = true;
+                } else {
+                    $scope.meetingNameExisted = false;
+                }
+
+
+            },function(response){
+                //console.log(response.data)
+            });
+        }
+
+        $scope.focusCall = function(prop){
+            if(prop == 'meetingNameExisted') {
+                $scope.meetingNameExisted = false;
+            }
         }
 
         $scope.test = function(str){

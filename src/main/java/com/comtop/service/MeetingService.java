@@ -225,4 +225,8 @@ public class MeetingService {
 
         return null;
     }
+
+    public Object existMeeting(String name){
+        return meetingRepository.countByName(name);
+    }
 }
