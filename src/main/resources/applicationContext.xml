@@ -19,23 +19,13 @@
        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 
-    <mvc:annotation-driven>
-        <!--<mvc:message-converters>
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper" ref="jacksonObjectMapper" />
-            </bean>
-        </mvc:message-converters>-->
-    </mvc:annotation-driven>
+    <mvc:annotation-driven />
 
-    <!--<bean id="jacksonObjectMapper" class="com.comtop.common.MyJsonMapper"/>-->
-
-    <!--<mvc:resources mapping="/static/**" location="/WEB-INF/static/" />-->
-
-    <context:component-scan base-package="com.comtop"/>
+    <context:component-scan base-package="com.comtop.meeting"/>
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <jpa:repositories base-package="com.comtop.dao" />
+    <jpa:repositories base-package="com.comtop.meeting.dao" />
 
 
 
@@ -56,7 +46,7 @@
         <!-- 指定Entity实体类包路径 -->
         <property name="packagesToScan" >
             <list>
-                <value>com.comtop.entity</value>
+                <value>com.comtop.meeting.entity</value>
             </list>
         </property>
 

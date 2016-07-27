@@ -37,6 +37,7 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
+
   <servlet>
     <servlet-name>spring</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -52,6 +53,16 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/css/*</url-pattern>
+    <url-pattern>/fonts/*</url-pattern>
+    <url-pattern>/js/*</url-pattern>
+    <url-pattern>/views/*</url-pattern>
+    <url-pattern>/favicon.ico</url-pattern>
+    <url-pattern>/index.html</url-pattern>
+    <url-pattern>/web/*</url-pattern>
+  </servlet-mapping>
 
   <filter>
     <filter-name>character</filter-name>
@@ -77,7 +88,7 @@
   </filter>
   <filter-mapping>
     <filter-name>SpringOpenEntityManagerInViewFilter</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/</url-pattern>
   </filter-mapping>
 
 

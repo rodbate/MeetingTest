@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+        <title>会议管理</title>
+
+        <base href="/">
+
+        <link rel="shortcut icon" href="favicon.ico">
+
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+
+        <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+        <link href="css/selectize.bootstrap3.css" rel="stylesheet" media="screen">
+
+        <link href="css/index.css" rel="stylesheet" media="screen">
+
+
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body ng-controller="IndexController" ng-cloak>
+
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="">会议管理</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li ng-class="{true: 'active', false: 'inactive'}[activeMenu[0]]" ng-click="active(0)"><a href="/web/welcome">首页</a></li>
+                        <li ng-class="{true: 'active', false: 'inactive'}[activeMenu[1]]" ng-click="active(1)"><a href="/web/meeting">会议列表</a></li>
+                        <!--<li ng-class="{true: 'active', false: 'inactive'}[activeMenu[2]]" ng-click="active(2)"><a href="">Contact</a></li>-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div id="contentView">
+                <div ng-view=""></div>
+            </div>
+        </div>
+
+        <!-- load requireJs -->
+        <script data-main="js/main.js" src="js/lib/require.js"></script>
+
+    </body>
+</html>

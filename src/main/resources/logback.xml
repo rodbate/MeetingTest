@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%file:%line] [%level] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="meeting" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/meeting-server-log-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%file:%line] [%level] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="test" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/meeting-server-log-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%file:%line] [%level] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="meeting"  level="INFO" additivity="false">
+        <appender-ref ref="meeting" />
+    </logger>
+
+    <logger name="com.comtop.meeting"  level="INFO|DEBUG|ERROR" additivity="false">
+        <appender-ref ref="test" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

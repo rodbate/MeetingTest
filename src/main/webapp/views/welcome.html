@@ -1,0 +1,168 @@
+<div class="container" ng-controller="WelcomeController">
+
+    <form class="form-horizontal"  role="form">
+        <div class="form-group">
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                <h1>会议室使用情况</h1>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">查询时间</label>
+            <div class="input-group date form_date col-md-3">
+                <input class="form-control" size="16" type="text" readonly>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
+                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <table class="table table-bordered">
+                <tr class="text-center">
+                    <th></th>
+                    <th>9:00 - 10:00</th>
+                    <th>10:00 - 11:00</th>
+                    <th>11:00 - 12:00</th>
+                    <th>14:00 - 15:00</th>
+                    <th>15:00 - 16:00</th>
+                    <th>16:00 - 17:00</th>
+                    <th>17:00 - 18:00</th>
+                </tr>
+                <tr ng-repeat="m in meetingInfo" align="middle">
+                    <td style="cursor:pointer">{{m.name}}</td>
+                    <td colspan="{{m.h9.colSpan}}" ng-class="{1:'success'}[m.h9.active]"  ng-click="showDetailOrCreate(m.h9.meetingId, m.id, m.name, '9:00')"  style="cursor:pointer{{m.h9.display}}">{{m.h9.host}}</td>
+                    <td colspan="{{m.h10.colSpan}}" ng-class="{1:'success'}[m.h10.active]" ng-click="showDetailOrCreate(m.h10.meetingId, m.id, m.name, '10:00')" style="cursor:pointer{{m.h10.display}}">{{m.h10.host}}</td>
+                    <td colspan="{{m.h11.colSpan}}" ng-class="{1:'success'}[m.h11.active]" ng-click="showDetailOrCreate(m.h11.meetingId, m.id, m.name, '11:00')" style="cursor:pointer{{m.h11.display}}">{{m.h11.host}}</td>
+                    <td colspan="{{m.h14.colSpan}}" ng-class="{1:'success'}[m.h14.active]" ng-click="showDetailOrCreate(m.h14.meetingId, m.id, m.name, '14:00')" style="cursor:pointer{{m.h14.display}}">{{m.h14.host}}</td>
+                    <td colspan="{{m.h15.colSpan}}" ng-class="{1:'success'}[m.h15.active]" ng-click="showDetailOrCreate(m.h15.meetingId, m.id, m.name, '15:00')" style="cursor:pointer{{m.h15.display}}">{{m.h15.host}}</td>
+                    <td colspan="{{m.h16.colSpan}}" ng-class="{1:'success'}[m.h16.active]" ng-click="showDetailOrCreate(m.h16.meetingId, m.id, m.name, '16:00')" style="cursor:pointer{{m.h16.display}}">{{m.h16.host}}</td>
+                    <td colspan="{{m.h17.colSpan}}" ng-class="{1:'success'}[m.h17.active]" ng-click="showDetailOrCreate(m.h17.meetingId, m.id, m.name, '17:00')" style="cursor:pointer{{m.h17.display}}">{{m.h17.host}}</td>
+                </tr>
+            </table>
+        </div>
+    </form>
+
+
+    <!-- Show meeting detail info Modal -->
+    <div class="modal fade" id="showDetailInfoModal" tabindex="-1" role="dialog" aria-labelledby="detailInfoModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="detailInfoModalLabel">会议详情</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">会议名称</div>
+                            <div class="panel-body">
+                                {{meetingDetailInfo.meetingName}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"></div>
+                    <div class="row">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">会议室名称</div>
+                            <div class="panel-body">
+                                {{meetingDetailInfo.meetingRoomName}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">主持人</div>
+                            <div class="panel-body">
+                                {{meetingDetailInfo.hostName}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">会议持续时间</div>
+                            <div class="panel-body">
+                                {{meetingDetailInfo.durationTime}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">与会人员</div>
+                            <div class="panel-body">
+                                {{meetingDetailInfo.participants}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-success" ng-click="cancel('#showDetailInfoModal')">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show meeting detail info Modal -->
+    <div class="modal fade" id="createMeetingModal" tabindex="-1" role="dialog" aria-labelledby="createMeetingModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="createMeetingModalLabel">新建会议</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal"  role="form" name="createMeetingForm">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">会议名称</label>
+                            <div class="col-md-7">
+                                <input placeholder="会议名称" class="form-control" name="meetingName" ng-blur="checkMeetingName()" ng-focus="focusCall('meetingNameExisted')" type="text" ng-model="createMeetingData.meetingName" required />
+                                <span class="text-danger" ng-show="createMeetingForm.meetingName.$error.required && meetingNameNullHide">会议名称不能为空</span>
+                                <span class="text-danger" ng-show="meetingNameExisted">会议名称已存在</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="roomId" class="col-md-3 control-label">会议室名称</label>
+                            <div class="col-md-7">
+                                <input id="roomId" class="form-control" type="text" value="{{createMeetingData.meetingRoomName}}" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">起始时间</label>
+                            <div class="col-md-7">
+                                <input class="form-control" type="text" value="{{currentDateTime}}" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">结束时间</label>
+                            <div class="col-md-7">
+                                <select class="form-control" name="endTime" style="width:100%;"  ng-model="createMeetingData.endDate" ng-options="d.time as d.hour for d in validEndDates" ng-change="getValidHosts()" placeholder="选择结束时间..." required ></select>
+                                <span class="text-danger" ng-show="createMeetingForm.endTime.$error.required && endTimeNullHide">结束时间不能为空</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">主持人</label>
+                            <div class="col-md-7">
+                                <select class="form-control" name="hostName" style="width:100%;"  ng-model="createMeetingData.hostId" ng-options="h.id as h.name for h in validHosts" placeholder="选择主持人..." required ></select>
+                                <span class="text-danger" ng-show="createMeetingForm.hostName.$error.required && hostNameNullHide">主持人不能为空</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="select-participant" class="col-md-3 control-label">与会者</label>
+                            <div class="col-md-7">
+                                <select id="select-participant" name="participant" placeholder="选择参与人..." required ></select>
+                                <span class="text-danger" ng-show="createMeetingForm.participant.$error.required && participantNullHide">参与人不能为空</span>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="cancel('#createMeetingModal')">取消</button>
+                    <button type="button" class="btn btn-success" ng-click="createMeeting(createMeetingForm.$valid)">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+
+
+body {
+  padding-top: 50px;
+}
+
+#contentView {
+  padding: 40px 15px;
+}
+
+.tdActive {
+    background-color:red;
+}
+
+.table th, .table td {
+	text-align: center;
+}
